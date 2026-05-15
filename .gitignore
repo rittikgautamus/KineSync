@@ -1,17 +1,7 @@
-# Data files
-/data/*
-/data/**/*
-!/data/
-!/data/.gitkeep
-!/data/**/
-!/data/**/.gitkeep
-
-/match_data/*
-/match_data/**/*
-!/match_data/
-!/match_data/.gitkeep
-!/match_data/**/
-!/match_data/**/.gitkeep
+# Ignore generated data, but keep raw source data
+match_data/*/statsbomb/parsed/
+match_data/*/polar/
+match_data/*/hudl/
 
 # Python cache
 __pycache__/

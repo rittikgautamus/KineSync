@@ -1,44 +1,24 @@
-# About
+# About KineSync
 
-KineSync converts raw sports data into a coach-ready video timeline. It combines StatsBomb tactical events with Polar-style biometric telemetry and produces a Hudl Sportscode XML file.
+KineSync is a specialized sports science tool designed to bridge the gap between tactical event data and physiological telemetry. By synchronizing these two asynchronous data streams, KineSync allows coaches and analysts to evaluate "Technical Resilience"—the ability of a player to maintain technical precision under high physiological stress.
 
-## Data flow
-- Raw StatsBomb events and freeze frames are stored under `match_data/{match_name}/statsbomb/`
-- Match metadata is stored under `match_data/metadata/`
-- Synthetic or real Polar telemetry lives in `match_data/{match_name}/polar/`
-- Hudl output is written to `match_data/{match_name}/hudl/`
-- Scripts accept `--match` and `--player` arguments and construct all file paths dynamically
+## The Core Concept: Technical Resilience
+In professional sports, an unsuccessful action (e.g., a misplaced pass) can be caused by two distinct factors:
+1. **Technical Skill Gap**: The player lacks the fundamental skill to execute the action, even when fresh.
+2. **Fatigue-Induced Error**: The player possesses the skill, but physiological exhaustion (high heart rate) degrades their execution.
 
-## Pipeline phases
+KineSync identifies these distinctions by matching the exact second of a tactical event to the player's heart rate at that moment.
 
-### 1. Tactical extraction (`parse_statsbomb.py`)
-- Input: StatsBomb event JSON files
-- Filters events by player name (substring match)
-- Extracts key technical actions: Pass, Dribble, Shot, Ball Recovery, Clearance
-- Normalizes event success/failure
-- Converts match time into continuous timestamp values, including a second-half offset
-- Output: `match_data/{match_name}/statsbomb/parsed/parsed_events_{player}.csv`
+## The Web Demo (v2.0)
+To demonstrate this capability as a deployable SaaS concept, KineSync has been pivoted to a **zero-infrastructure web application**. 
 
-### 2. Biometric ingestion / simulation (`generate_polar_mock.py`)
-- Input: parsed events CSV
-- Builds a 1Hz time series representing player heart rate and speed
-- Simulates HR drift and event-triggered spikes for higher-intensity actions
-- Output: `match_data/{match_name}/polar/polar_mock_{player}.csv`
+### Technical Highlights:
+- **Edge Computing**: All data processing, from StatsBomb JSON parsing to biometric synthesis, happens entirely within the user's browser.
+- **Privacy by Design**: No data is uploaded to a server; the analysis is performed locally in memory.
+- **Synthetic Telemetry**: Uses a stochastic simulation model (logarithmic growth + sinusoidal variance + event-driven spikes) to mimic real-world Polar heart rate data.
+- **Hudl Integration**: Outputs a strictly formatted XML file compatible with Hudl Sportscode, allowing analysts to drag-and-drop resilience clips directly into their video timeline.
 
-### 3. Evaluation engine (`generate_engine_xml.py`)
-- Inputs: parsed events CSV and polar mock/telemetry CSV
-- Merges data on timestamp to align each event with the exact HR value
-- Applies evaluation rules:
-  - Unsuccessful event + HR >= 90% max → `Fatigue-Induced Error`
-  - Unsuccessful event + HR <= 80% max → `Technical Skill Error`
-  - Successful event + HR >= 90% max → `High-Stress Success`
-- Output: `match_data/{match_name}/hudl/su_enriched_timeline.xml`
-
-## XML structure
-- Hudl Sportscode compliant XML
-- Contains a root `<file>` element with nested `<instances>` and `<instance>` entries
-- Each instance includes ID, start/end times, code category, and labels for Player, Action Type, and Heart Rate
-
-## Notes
-- The mock Polar generator is for development and demonstration; real Polar CSV files can replace it.
-- Keep the workspace folder structure exact for scripts to resolve paths correctly.
+## Target Audience
+- **Performance Coaches**: To identify when players are hitting their "fatigue wall."
+- **Technical Analysts**: To differentiate between training needs (skill) and conditioning needs (fitness).
+- **Sports Scientists**: To validate the impact of physiological load on technical output.

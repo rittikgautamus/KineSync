@@ -1,77 +1,35 @@
-# KineSync
+# KineSync | Technical Resilience Demo
 
-A sports science pipeline that synchronizes StatsBomb tactical event data with Polar biometric telemetry and generates Hudl Sportscode XML timelines.
+KineSync is a professional sports science demonstration tool that evaluates "Technical Resilience" by synchronizing tactical event data with biometric telemetry.
 
-## Requirements
-- Python 3.8+
-- `pandas`
+## 🚀 The Web Demo
+The project has pivoted from a CLI tool to a **zero-infrastructure, client-side web application**. All processing occurs in the browser's memory, ensuring 100% data privacy and instant feedback.
 
-## Directory architecture
-Your workspace must follow this structure:
+### Key Features
+- **Edge-Computed Pipeline**: Tactical extraction, biometric synthesis, and resilience analysis are performed entirely in JavaScript.
+- **Direct Data Sourcing**: Fetches raw StatsBomb event data directly from official open-data repositories.
+- **Hudl Integration**: Generates Hudl Sportscode compliant XML timelines for immediate video analysis.
+- **Professional Dashboard**: A sequential "Evaluation Journey" with a real-time action log and data explorer.
 
-```text
-match_data/
-└── {match_name}/
-    ├── statsbomb/
-    │   ├── events/
-    │   ├── freeze_frames/
-    │   ├── parsed/
-    │   └── metadata.json
-    ├── polar/
-    └── hudl/
-scripts/
-├── parse_statsbomb.py
-├── generate_polar_mock.py
-└── generate_engine_xml.py
-```
+## 🛠️ Local Setup
+To run the demo locally:
+1. Clone the repository.
+2. Launch a local static server from the root directory:
+   ```bash
+   python3 -m http.server 8000
+   ```
+3. Open your browser and navigate to: `http://localhost:8000`
 
-## Download example data
+## 📈 Pipeline Workflow
+1. **Match Selection**: Load a preconfigured match dataset.
+2. **Player Selection**: Filter technical actions for a specific player.
+3. **Biometric Simulation**: Generate a synthetic 1Hz HR and speed telemetry stream.
+4. **Resilience Analysis**: Classify actions as Fatigue-Induced Errors, Technical Skill Errors, or High-Stress Successes.
+5. **Export**: Preview and download the enriched Hudl XML timeline.
 
-cd /home/user/projects/KineSync
-
-mkdir -p match_data/{match_name}/statsbomb/{events,freeze_frames,parsed}
-mkdir -p match_data/{match_name}/polar
-mkdir -p match_data/{match_name}/hudl
-mkdir -p match_data/metadata
-
-# Example: Argentina vs France
-cd match_data/arg_vs_fra/statsbomb/events
-wget https://raw.githubusercontent.com/statsbomb/open-data/master/data/events/3869685.json
-cd ../freeze_frames
-wget https://raw.githubusercontent.com/statsbomb/open-data/master/data/three-sixty/3869685.json
-cd ../../../..
-
-# StatsBomb match metadata
-cd match_data/metadata
-wget https://raw.githubusercontent.com/statsbomb/open-data/master/data/matches/43/106.json -O wc2022_matches.json
-cd ../..
-
-## Run
-
-uv run python scripts/parse_statsbomb.py --match arg_vs_fra --player Enzo
-uv run python scripts/generate_polar_mock.py --match arg_vs_fra --player Enzo
-uv run python scripts/generate_engine_xml.py --match arg_vs_fra --player Enzo
-
-## CLI arguments
-
-parse_statsbomb.py
-- `--match` (required): Match folder name (e.g., `arg_vs_fra`)
-- `--player` (required): Player name to extract (substring match)
-
-generate_polar_mock.py
-- `--match` (required): Match folder name
-- `--player` (required): Player name (must match `parse_statsbomb` output)
-
-generate_engine_xml.py
-- `--match` (required): Match folder name
-- `--player` (required): Player name (must match `polar_mock` output)
-
-## Outputs
-- `match_data/{match_name}/statsbomb/parsed/parsed_events_{player}.csv`
-- `match_data/{match_name}/polar/polar_mock_{player}.csv` (includes Heart Rate [bpm] and Speed [km/h])
-- `match_data/{match_name}/hudl/su_enriched_timeline.xml`
-
-## Workflow summary
-1. `parse_statsbomb.py` reads StatsBomb JSON, filters a player, and writes a cleaned events CSV.
-2. `generate_polar_mock.py` creates a synthetic 1Hz Polar-style telemetry file.
-3. `generate_engine_xml.py` merges event and HR data, then writes a Hudl-compatible XML timeline.
+## 📂 Project Structure
+- `index.html`: The main application UI.
+- `style.css`: Professional B2B styling and layout.
+- `engine.js`: The core compute engine (JS translation of the original Python pipeline).
+- `REQUIREMENTS.md`: Detailed technical specifications.
+- `AGENT_TESTING.md`: Standardized verification procedures.

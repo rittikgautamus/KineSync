@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KineSync | Technical Resilience Demo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>KineSync</h1>
+            <p class="subtitle">Technical Resilience Analysis Pipeline</p>
+        </header>
+
+        <main>
+            <div class="layout-grid">
+                <!-- Left Panel: Controls -->
+                <div class="controls-panel">
+                    <!-- Step 1: Match Selection -->
+                    <section id="step-1" class="step active">
+                        <div class="step-header">
+                            <span class="step-number">1</span>
+                            <h2>Match Selection</h2>
+                        </div>
+                        <div class="control-group">
+                            <label for="match-select">Select Match Dataset</label>
+                            <select id="match-select">
+                                <option value="" disabled selected>Choose a match...</option>
+                            </select>
+                        </div>
+                        <div id="match-status" class="status"></div>
+                    </section>
+
+                    <!-- Step 2: Player Selection -->
+                    <section id="step-2" class="step locked">
+                        <div class="step-header">
+                            <span class="step-number">2</span>
+                            <h2>Player Selection</h2>
+                        </div>
+                        <div class="control-group">
+                            <label for="player-select">Select Target Player</label>
+                            <select id="player-select" disabled>
+                                <option value="" disabled selected>First select a match...</option>
+                            </select>
+                        </div>
+                        <div id="player-status" class="status"></div>
+                    </section>
+
+                    <!-- Step 3: Biometric Simulation -->
+                    <section id="step-3" class="step locked">
+                        <div class="step-header">
+                            <span class="step-number">3</span>
+                            <h2>Biometric Simulation</h2>
+                        </div>
+                        <p class="description">Generate dummy telemetry based on tactical intensity.</p>
+                        <button id="btn-generate" class="btn primary" disabled>Generate Biometrics</button>
+                        <div id="sim-status" class="status"></div>
+                    </section>
+
+                    <!-- Step 4: Resilience Analysis & Export -->
+                    <section id="step-4" class="step locked">
+                        <div class="step-header">
+                            <span class="step-number">4</span>
+                            <h2>Resilience Analysis & Export</h2>
+                        </div>
+                        <p class="description">Join tactical and biometric data to identify resilience categories.</p>
+                        <button id="btn-export" class="btn primary" disabled>Export to Hudl Sportscode</button>
+                        <div id="export-status" class="status"></div>
+                    </section>
+                </div>
+
+                <!-- Right Panel: Data Explorer -->
+                <div class="explorer-panel">
+                    <div class="tabs">
+                        <button class="tab active" data-tab="match-data">Match Data</button>
+                        <button class="tab" data-tab="player-data">Player Data</button>
+                        <button class="tab" data-tab="biometrics">Biometrics</button>
+                        <button class="tab" data-tab="hudl-xml">Hudl XML</button>
+                    </div>
+
+                    <div class="tab-content-container">
+                        <div id="match-data" class="tab-content active">
+                            <div id="match-data-summary"></div>
+                        </div>
+                        <div id="player-data" class="tab-content">
+                            <div id="player-data-summary"></div>
+                        </div>
+                        <div id="biometrics" class="tab-content">
+                            <div id="biometric-info"></div>
+                            <pre id="biometric-text" class="xml-preview"></pre>
+                        </div>
+                        <div id="hudl-xml" class="tab-content">
+                            <div id="hudl-summary"></div>
+                            <pre id="hudl-text" class="xml-preview"></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Bottom Panel: Action Log -->
+            <div class="log-section">
+                <div class="log-header">Action Log</div>
+                <div id="action-log" class="log-box"></div>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2026 KineSync | Edge-Computed Sports Science Demo</p>
+        </footer>
+    </div>
+
+    <script src="engine.js"></script>
+</body>
+</html>
