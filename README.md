@@ -1,35 +1,46 @@
-# KineSync | Technical Resilience Demo
+# KineSync | Elite Performance Analytics Demo
 
-KineSync is a professional sports science demonstration tool that evaluates "Technical Resilience" by synchronizing tactical event data with biometric telemetry.
+KineSync is a browser-first analytical tool designed for professional soccer coaches and sports scientists. It synchronizes tactical event data with simulated biometric telemetry to identify "Resilience Events"—moments where physiological fatigue directly impacts technical execution.
 
-## 🚀 The Web Demo
-The project has pivoted from a CLI tool to a **zero-infrastructure, client-side web application**. All processing occurs in the browser's memory, ensuring 100% data privacy and instant feedback.
+## 🚀 Quick Start
 
-### Key Features
-- **Edge-Computed Pipeline**: Tactical extraction, biometric synthesis, and resilience analysis are performed entirely in JavaScript.
-- **Direct Data Sourcing**: Fetches raw StatsBomb event data directly from official open-data repositories.
-- **Hudl Integration**: Generates Hudl Sportscode compliant XML timelines for immediate video analysis.
-- **Professional Dashboard**: A sequential "Evaluation Journey" with a real-time action log and data explorer.
+KineSync is a zero-install, client-side application. To launch the demo:
 
-## 🛠️ Local Setup
-To run the demo locally:
-1. Clone the repository.
-2. Launch a local static server from the root directory:
-   ```bash
-   python3 -m http.server 8000
-   ```
-3. Open your browser and navigate to: `http://localhost:8000`
+1. Navigate to the project root directory.
+2. Open `index.html` in any modern web browser (Chrome, Firefox, Edge).
 
-## 📈 Pipeline Workflow
-1. **Match Selection**: Load a preconfigured match dataset.
-2. **Player Selection**: Filter technical actions for a specific player.
-3. **Biometric Simulation**: Generate a synthetic 1Hz HR and speed telemetry stream.
-4. **Resilience Analysis**: Classify actions as Fatigue-Induced Errors, Technical Skill Errors, or High-Stress Successes.
-5. **Export**: Preview and download the enriched Hudl XML timeline.
+## 🛠 How it Works: The Workflow
 
-## 📂 Project Structure
-- `index.html`: The main application UI.
-- `style.css`: Professional B2B styling and layout.
-- `engine.js`: The core compute engine (JS translation of the original Python pipeline).
-- `REQUIREMENTS.md`: Detailed technical specifications.
-- `AGENT_TESTING.md`: Standardized verification procedures.
+The application follows a linear, workflow-driven process to ensure data integrity:
+
+### Step 1: Match Selection
+Choose a high-profile match from the dropdown. KineSync fetches the raw tactical event data directly from remote StatsBomb JSON endpoints.
+
+### Step 2: Player Analysis
+Select a player from the match roster. The engine isolates all technical actions (Passes, Shots, Dribbles, etc.) and calculates the player's exact time on the pitch, accounting for substitutions.
+
+### Step 3: Biometric Simulation
+Generate a simulated heart rate (HR) curve. This simulation uses a physiological model where HR spikes are driven by the intensity of the player's tactical actions, creating a realistic cardiovascular profile.
+
+### Step 4: Resilience Export & Analysis
+Export the analysis to a **Hudl XML** format. The system automatically classifies events based on HR percentage:
+- **Fatigue-Induced Error**: Unsuccessful action at $\geq 90\%$ Max HR.
+- **Technical Skill Error**: Unsuccessful action at $\leq 80\%$ Max HR.
+- **High-Stress Success**: Successful action at $\geq 90\%$ Max HR.
+
+## 💻 Technical Stack
+
+- **Frontend**: HTML5, CSS3 (Custom Properties for Dark Theme), JavaScript (ES6+).
+- **Visualization**: [Chart.js](https://www.chartjs.org/) for interactive telemetry and mixed-mode scatter plots.
+- **Data**: StatsBomb Open Data API (via Fetch).
+- **Export**: Custom XML generator for Hudl compatibility.
+
+## 🎯 Key Features
+
+- **Remote Data Integration**: No local data files required; fetches live JSON from GitHub.
+- **Physiological Modeling**: Event-driven BPM spikes with natural decay.
+- **Cascading State Management**: Integrated reset system to prevent stale data across match/player changes.
+- **B2B Design**: High-contrast, dark-themed UI optimized for elite coaching environments.
+
+---
+*KineSync — Quantifying the physiological cost of technical precision.*

@@ -3,11 +3,6 @@ match_data/*/statsbomb/parsed/
 match_data/*/polar/
 match_data/*/hudl/
 
-# Python cache
-__pycache__/
-*.py[cod]
-*$py.class
-
 # OS files
 .DS_Store
 Thumbs.db

@@ -5,13 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KineSync | Technical Resilience Demo</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Visualization Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>KineSync</h1>
-            <p class="subtitle">Technical Resilience Analysis Pipeline</p>
-        </header>
+    <header>
+        <h1>KineSync</h1>
+        <p>Technical Resilience Analysis Pipeline</p>
+        <p class="muted" style="font-size: 0.9rem; margin-top: 0.5rem;">
+            World Cup 2022 match metadata available at: 
+            <a href="https://raw.githubusercontent.com/statsbomb/open-data/master/data/matches/43/106.json" target="_blank" style="color: var(--primary); text-decoration: underline;">
+                StatsBomb Open Data
+            </a>
+        </p>
+    </header>
 
         <main>
             <div class="layout-grid">
@@ -88,11 +96,17 @@
                         </div>
                         <div id="biometrics" class="tab-content">
                             <div id="biometric-info"></div>
-                            <pre id="biometric-text" class="xml-preview"></pre>
+                            <div class="viz-container">
+                                <canvas id="biometric-chart"></canvas>
+                            </div>
+                            <div id="biometric-raw" class="raw-data-preview"></div>
                         </div>
                         <div id="hudl-xml" class="tab-content">
                             <div id="hudl-summary"></div>
-                            <pre id="hudl-text" class="xml-preview"></pre>
+                            <div class="viz-container">
+                                <canvas id="hudl-chart"></canvas>
+                            </div>
+                            <div id="hudl-raw" class="raw-data-preview"></div>
                         </div>
                     </div>
                 </div>

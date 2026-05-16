@@ -1,24 +1,34 @@
 # About KineSync
 
-KineSync is a specialized sports science tool designed to bridge the gap between tactical event data and physiological telemetry. By synchronizing these two asynchronous data streams, KineSync allows coaches and analysts to evaluate "Technical Resilience"—the ability of a player to maintain technical precision under high physiological stress.
+## The Vision: Tactical Truth vs. Physiological Reality
 
-## The Core Concept: Technical Resilience
-In professional sports, an unsuccessful action (e.g., a misplaced pass) can be caused by two distinct factors:
-1. **Technical Skill Gap**: The player lacks the fundamental skill to execute the action, even when fresh.
-2. **Fatigue-Induced Error**: The player possesses the skill, but physiological exhaustion (high heart rate) degrades their execution.
+In elite sports analysis, a technical error—a missed pass, a failed dribble, or a misplaced clearance—is often categorized simply as a "skill error." However, this perspective ignores the physiological context. A player who fails a pass at 70% of their maximum heart rate is making a different kind of mistake than a player who fails the same pass while operating at 95% capacity.
 
-KineSync identifies these distinctions by matching the exact second of a tactical event to the player's heart rate at that moment.
+**KineSync** was created to bridge this gap. By synchronizing tactical event data with high-resolution biometric telemetry, KineSync allows performance coaches to identify the exact moment physiological fatigue overrides technical skill.
 
-## The Web Demo (v2.0)
-To demonstrate this capability as a deployable SaaS concept, KineSync has been pivoted to a **zero-infrastructure web application**. 
+## The "Resilience Event" Concept
 
-### Technical Highlights:
-- **Edge Computing**: All data processing, from StatsBomb JSON parsing to biometric synthesis, happens entirely within the user's browser.
-- **Privacy by Design**: No data is uploaded to a server; the analysis is performed locally in memory.
-- **Synthetic Telemetry**: Uses a stochastic simulation model (logarithmic growth + sinusoidal variance + event-driven spikes) to mimic real-world Polar heart rate data.
-- **Hudl Integration**: Outputs a strictly formatted XML file compatible with Hudl Sportscode, allowing analysts to drag-and-drop resilience clips directly into their video timeline.
+KineSync introduces the concept of the **Resilience Event**. Instead of looking at events in isolation, we map them onto a biometric curve to classify them into three critical categories:
+
+1. **Fatigue-Induced Error**: A technical failure occurring at extreme physiological stress ($\geq 90\%$ Max HR). This indicates a breakdown in resilience.
+2. **Technical Skill Error**: A technical failure occurring at low-to-moderate stress ($\leq 80\%$ Max HR). This indicates a fundamental execution error.
+3. **High-Stress Success**: A successful execution performed under extreme physiological stress. This is the ultimate marker of elite resilience.
+
+## How KineSync Works
+
+The system follows an incremental data pipeline to move from raw match statistics to actionable coaching insights:
+
+### 1. Data Ingestion
+KineSync connects to remote tactical datasets (via StatsBomb). It doesn't just load events; it maps them to a linear temporal timeline, accounting for match periods and substitutions to ensure the player's "on-pitch" time is perfectly aligned.
+
+### 2. Biometric Simulation
+Using a physiological model, KineSync generates a simulated heart rate (HR) curve. This is not a random line; it is driven by the tactical data. Every "Shot" or "Ball Recovery" triggers a calculated BPM spike and subsequent decay, simulating the real-world cardiovascular response of a professional athlete.
+
+### 3. Resilience Analysis
+The engine overlays the tactical events on top of the HR curve. By calculating the heart rate percentage at the exact second of each event, KineSync automatically classifies the action based on the Resilience Matrix.
+
+### 4. Video Integration
+To make the data actionable, KineSync exports these findings as a **Hudl XML** file. This allows coaches to import the "Resilience Events" directly into their video analysis software, instantly jumping to the clips where fatigue played a decisive role.
 
 ## Target Audience
-- **Performance Coaches**: To identify when players are hitting their "fatigue wall."
-- **Technical Analysts**: To differentiate between training needs (skill) and conditioning needs (fitness).
-- **Sports Scientists**: To validate the impact of physiological load on technical output.
+KineSync is designed for **Performance Coaches, Sports Scientists, and Technical Directors** who need to quantify the impact of fatigue on performance to optimize substitutions, training loads, and player development.
