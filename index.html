@@ -25,14 +25,13 @@
             <div class="layout-grid">
                 <!-- Left Panel: Controls -->
                 <div class="controls-panel">
-                    <!-- Step 1: Match Selection -->
                     <section id="step-1" class="step active">
                         <div class="step-header">
                             <span class="step-number">1</span>
-                            <h2>Match Selection</h2>
+                            <h2>Macro Analysis</h2>
                         </div>
+                        <p class="description">Select a match to automatically generate the Positional Unit Matrix.</p>
                         <div class="control-group">
-                            <label for="match-select">Select Match Dataset</label>
                             <select id="match-select">
                                 <option value="" disabled selected>Choose a match...</option>
                             </select>
@@ -40,51 +39,33 @@
                         <div id="match-status" class="status"></div>
                     </section>
 
-                    <!-- Step 2: Player Selection -->
                     <section id="step-2" class="step locked">
                         <div class="step-header">
                             <span class="step-number">2</span>
-                            <h2>Player Selection</h2>
+                            <h2>Micro Analysis</h2>
                         </div>
+                        <p class="description">Select an individual to automatically map their Technical Resilience.</p>
                         <div class="control-group">
-                            <label for="player-select">Select Target Player</label>
                             <select id="player-select" disabled>
                                 <option value="" disabled selected>First select a match...</option>
                             </select>
                         </div>
                         <div id="player-status" class="status"></div>
                     </section>
-
-                    <!-- Step 3: Biometric Simulation -->
-                    <section id="step-3" class="step locked">
-                        <div class="step-header">
-                            <span class="step-number">3</span>
-                            <h2>Biometric Simulation</h2>
-                        </div>
-                        <p class="description">Generate dummy telemetry based on tactical intensity.</p>
-                        <button id="btn-generate" class="btn primary" disabled>Generate Biometrics</button>
-                        <div id="sim-status" class="status"></div>
-                    </section>
-
-                    <!-- Step 4: Resilience Analysis & Export -->
-                    <section id="step-4" class="step locked">
-                        <div class="step-header">
-                            <span class="step-number">4</span>
-                            <h2>Resilience Analysis & Export</h2>
-                        </div>
-                        <p class="description">Join tactical and biometric data to identify resilience categories.</p>
-                        <button id="btn-export" class="btn primary" disabled>Export to Hudl Sportscode</button>
-                        <div id="export-status" class="status"></div>
-                    </section>
                 </div>
 
                 <!-- Right Panel: Data Explorer -->
                 <div class="explorer-panel">
+                    <div class="biometric-controls" style="margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; padding: 0.75rem; background: rgba(255,255,255,0.05); border-radius: 8px; border: 1px solid var(--border-color);">
+                        <button id="btn-regenerate-bio" class="btn-secondary" style="padding: 0.5rem 1rem; cursor: pointer; background: var(--primary); color: white; border: none; border-radius: 4px; font-weight: 600;">Regenerate Biometrics</button>
+                        <span class="muted" style="font-size: 0.85rem; font-style: italic;">Note: Biometric data is simulated/generated and not any person's real data.</span>
+                    </div>
                     <div class="tabs">
                         <button class="tab active" data-tab="match-data">Match Data</button>
                         <button class="tab" data-tab="player-data">Player Data</button>
                         <button class="tab" data-tab="biometrics">Biometrics</button>
                         <button class="tab" data-tab="hudl-xml">Hudl XML</button>
+                        <button class="tab" data-tab="squad-data">Positional Unit Matrix</button>
                     </div>
 
                     <div class="tab-content-container">
@@ -99,7 +80,8 @@
                             <div class="viz-container">
                                 <canvas id="biometric-chart"></canvas>
                             </div>
-                            <div id="biometric-raw" class="raw-data-preview"></div>
+                            <div id="biometric-raw-active" class="raw-data-preview"></div>
+                            <div id="biometric-raw-inactive" class="raw-data-preview"></div>
                         </div>
                         <div id="hudl-xml" class="tab-content">
                             <div id="hudl-summary"></div>
@@ -107,6 +89,49 @@
                                 <canvas id="hudl-chart"></canvas>
                             </div>
                             <div id="hudl-raw" class="raw-data-preview"></div>
+                        </div>
+                        <div id="squad-data" class="tab-content">
+                            <div id="squad-summary">
+                                <p><strong>Squad Dynamics Analysis</strong></p>
+                                <p class="muted">Comparing positional units across technical resilience and physical intensity.</p>
+                            </div>
+
+                            <div class="team-controls" style="display: flex; gap: 1rem; margin-bottom: 1.5rem; justify-content: center; flex-wrap: wrap;">
+                                <button id="btn-gen-team-a" class="btn secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem; cursor: pointer;">Generate Avg Biometrics Team A</button>
+                                <button id="btn-gen-team-b" class="btn secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem; cursor: pointer;">Generate Avg Biometrics Team B</button>
+                            </div>
+
+                            <div id="team-stats-summary" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; font-size: 0.85rem; text-align: center;">
+                                <!-- Team A/B stats will be injected here -->
+                            </div>
+                            
+                             <div class="chart-controls" style="display: flex; gap: 0.75rem; margin-bottom: 1rem; flex-wrap: wrap; justify-content: center;">
+                                 <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.85rem; color: #cbd5e1;">
+                                     <input type="checkbox" class="chart-toggle" data-unit="DefenderA" checked> Def A
+                                 </label>
+                                 <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.85rem; color: #cbd5e1;">
+                                     <input type="checkbox" class="chart-toggle" data-unit="MidfielderA" checked> Mid A
+                                 </label>
+                                 <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.85rem; color: #cbd5e1;">
+                                     <input type="checkbox" class="chart-toggle" data-unit="AttackerA" checked> Att A
+                                 </label>
+                                 <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.85rem; color: #cbd5e1;">
+                                     <input type="checkbox" class="chart-toggle" data-unit="DefenderB" checked> Def B
+                                 </label>
+                                 <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.85rem; color: #cbd5e1;">
+                                     <input type="checkbox" class="chart-toggle" data-unit="MidfielderB" checked> Mid B
+                                 </label>
+                                 <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.85rem; color: #cbd5e1;">
+                                     <input type="checkbox" class="chart-toggle" data-unit="AttackerB" checked> Att B
+                                 </label>
+                                 <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.85rem; color: #fff; font-weight: bold;">
+                                     <input type="checkbox" class="chart-toggle" data-unit="Player" checked> Current Player
+                                 </label>
+                             </div>
+
+                            <div class="viz-container" style="height: 450px; padding: 1rem;">
+                                <canvas id="squad-radar-chart"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -123,6 +148,6 @@
         </footer>
     </div>
 
-    <script src="engine.js"></script>
+    <script type="module" src="engine.js"></script>
 </body>
 </html>
