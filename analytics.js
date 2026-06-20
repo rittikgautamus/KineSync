@@ -216,6 +216,48 @@ export function getTeams(rawEvents) {
     return teams.length >= 2 ? [teams[0], teams[1]] : teams;
 }
 
+/**
+ * Finds players belonging to a specific tactical unit and returns them 
+ * sorted by their total technical actions (impact).
+ * @param {Array} rawEvents - The full match event dataset.
+ * @param {string} unitType - 'Defender', 'Midfielder', or 'Attacker'.
+ * @returns {Array} Sorted list of player names.
+ */
+export function getPlayersByUnit(rawEvents, unitType) {
+    const playerUnitMap = new Map(); // name -> { count: 0, position: null }
+
+    rawEvents.forEach(e => {
+        const playerName = e.player?.name;
+        if (!playerName) return;
+
+        if (!playerUnitMap.has(playerName)) {
+            playerUnitMap.set(playerName, { count: 0, position: null });
+        }
+
+        const entry = playerUnitMap.get(playerName);
+        
+        // Count technical actions
+        if (['Pass', 'Dribble', 'Shot', 'Ball Recovery', 'Clearance'].includes(e.type?.name)) {
+            entry.count++;
+        }
+
+        // Capture position from the first available event
+        if (!entry.position && e.position?.name) {
+            entry.position = e.position.name;
+        }
+    });
+
+    // Filter by unit type and sort by count
+    const playersInUnit = [];
+    playerUnitMap.forEach((data, name) => {
+        if (data.position && POSITIONS[data.position] === unitType) {
+            playersInUnit.push({ name, count: data.count });
+        }
+    });
+
+    return playersInUnit.sort((a, b) => b.count - a.count).map(p => p.name);
+}
+
 export async function generateTeamBiometricsAsync(rawEvents, teamName, onProgress) {
     const teamPlayers = Array.from(new Set(
         rawEvents.filter(e => e.team?.name === teamName).map(e => e.player?.name).filter(Boolean)
@@ -363,7 +405,7 @@ export function analyzeSquad(rawEvents) {
         tactical.forEach(event => {
             if (event.timestamp < pSubIn || event.timestamp > pSubOut) return;
             
-            // Re-use the event impact logic
+            // Re-use the event impacts for consistency
             const eventImpacts = tactical.map(te => ({
                 timestamp: te.timestamp,
                 impact: (CONFIG.EVENT_IMPACT[te.type] || 12)

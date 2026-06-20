@@ -443,10 +443,11 @@ export function renderHudlChart() {
     }
 }
 
-export function renderSquadChart() {
+export function renderSquadChart(onUnitClick) {
     const canvas = document.getElementById('squad-radar-chart');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
+    if (onUnitClick) state.onUnitClick = onUnitClick;
     if (state.charts.squad) state.charts.squad.destroy();
 
     const datasets = [];
@@ -516,6 +517,18 @@ export function renderSquadChart() {
         },
         options: {
             responsive: true, maintainAspectRatio: false,
+            onClick: (event, activeElements) => {
+                if (activeElements.length > 0 && onUnitClick) {
+                    const datasetIndex = activeElements[0].datasetIndex;
+                    const label = state.charts.squad.data.datasets[datasetIndex].label;
+                    
+                    // Determine unit from label (e.g., "Argentina Defender" or "Team A Def")
+                    const unit = ['Defender', 'Midfielder', 'Attacker'].find(u => label.includes(u));
+                    if (unit) {
+                        onUnitClick(unit);
+                    }
+                }
+            },
             scales: { 
                 r: { 
                     angleLines: { color: '#334155' }, 
@@ -587,7 +600,7 @@ export function switchTab(tabId) {
             renderHudlChart();
         }
         if (tabId === 'squad-data' && (state.teamAStats || state.teamBStats)) {
-            renderSquadChart();
+            renderSquadChart(state.onUnitClick);
         }
     });
 }

@@ -26,6 +26,7 @@ export const state = {
         hudl: null,
         squad: null
     },
+    onUnitClick: null,
     chartVisibility: {
         DefenderA: true,
         MidfielderA: true,
