@@ -512,7 +512,7 @@ export function renderSquadChart(onUnitClick) {
     state.charts.squad = new Chart(ctx, {
         type: 'radar',
         data: {
-            labels: ['Resilience (High Stress Success)', 'Fatigue Decay (Red Zone Errors)', 'Base Technical Consistency', 'Physical Intensity Load'],
+            labels: ['Success Under Fatigue', 'Errors Under Fatigue', 'Success Rate (Rested)', 'Avg Heart Rate (% of Max)'],
             datasets: datasets
         },
         options: {

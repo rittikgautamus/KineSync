@@ -15,7 +15,7 @@ KineSync moves beyond simple error analysis by mapping technical outcomes agains
 ## 🚀 Key Features
 
 - **Dynamic Biometric Simulation**: Generates high-fidelity, stochastic heart rate (HR) curves driven by real-time tactical intensity (shots, dribbles, recoveries).
-- **Squad Dynamics Engine**: Aggregates physiological load across positional units (Attackers, Midfielders, Defenders) to provide a comparative Positional Unit Matrix (PUM).
+- **Team Workload Engine**: Aggregates physiological load across positional units (Attackers, Midfielders, Defenders) to provide a comparative Team Workload analysis.
 - **Technical Resilience Mapping**: Identifies the breakdown of skill under physical stress.
 - **Professional Export**: Generates **Hudl-compatible XML** timelines, allowing coaches to jump directly to critical fatigue-driven moments in video analysis software.
 
@@ -23,7 +23,7 @@ KineSync moves beyond simple error analysis by mapping technical outcomes agains
 
 1. **Match Selection**: Select a match to ingest tactical data from StatsBomb endpoints.
 2. **Biometric Generation**: Simulate the physiological response of the roster based on match intensity.
-3. **Squad Analysis**: Compare the resilience of different positional units via the PUM Radar Chart.
+3. **Team Workload Analysis**: Compare the resilience of different positional units via the Team Workload Radar Chart.
 4. **Micro Analysis**: Isolate specific players to view their individual technical-physiological relationship.
 5. **Export**: Download enriched CSV telemetry or Hudl XML timelines.
 

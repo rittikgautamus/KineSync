@@ -258,10 +258,18 @@ select {
         gap: 1rem;
     }
 
-    /* Ensure panels take full width on mobile */
+    /* Ensure panels take full width on mobile and don't cause overflow */
     .left-panel,
     .right-panel {
         width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* Allow internal components to use full available width */
+    .step, .file-card, .tab-content, .explorer-panel {
+        width: 100%;
+        box-sizing: border-box;
     }
     
     .viz-container {
