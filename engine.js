@@ -117,6 +117,11 @@ async function runTeamAnalysis(teamIndex) {
         if (document.getElementById('squad-data')?.classList.contains('active')) {
             ui.renderSquadChart(handleUnitClick);
         }
+
+        // NEW: Auto-scroll down to the chart on mobile
+        if (window.innerWidth <= 960) {
+            document.querySelector('.explorer-panel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
     } catch (err) {
         ui.logAction(`Error analyzing ${teamName}: ${err.message}`, 'error');
     }
@@ -143,7 +148,7 @@ function handlePlayerSelection() {
     btnRegenerateBio.disabled = false;
     runBiometricSimulation();
 
-    // Force squad chart refresh if the squad data tab is active
+    // Force squad chart refresh if the squad data tab is active (fixes Radar Chart overlay sync)
     if (document.getElementById('squad-data')?.classList.contains('active')) {
         ui.renderSquadChart(handleUnitClick);
     }
@@ -155,6 +160,11 @@ function runBiometricSimulation() {
 
     ui.renderBiometricsPanel();
     ui.logAction(`Generated ${telemetry.length} telemetry points`);
+
+    // Ensure the chart is rendered immediately if the user is on the biometrics tab
+    if (document.getElementById('biometrics')?.classList.contains('active')) {
+        ui.renderBiometricChart();
+    }
 
     runHudlExport();
 }
@@ -172,6 +182,15 @@ function runHudlExport() {
 
     ui.renderHudlPanel();
     ui.logAction(`Exported ${state.hudlClipCount} resilience clips to Hudl XML`);
+    
+    // REMOVED: ui.switchTab('hudl-xml'); 
+    // We no longer force a tab switch here to prevent breaking the user's current view during regeneration.
+    // Users can switch to the 'Hudl XML' tab manually to see the output.
+
+    // NEW: Auto-scroll down to the chart on mobile
+    if (window.innerWidth <= 960) {
+        document.querySelector('.explorer-panel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
 }
 
 function init() {
@@ -196,6 +215,10 @@ function init() {
 
         btnRegenerateBio.addEventListener('click', async () => {
             ui.logAction('Manual regeneration triggered...', 'info');
+            
+            // Capture the currently active tab before starting regeneration
+            const activeTabId = document.querySelector('.tab.active')?.dataset.tab;
+            
             clearBiometricsState();
 
             // 1. Regenerate individual player telemetry
@@ -208,13 +231,19 @@ function init() {
                 await runTeamAnalysis(1);
             }
 
-            // Force chart refresh if the biometrics tab is currently active
-            if (document.getElementById('biometrics')?.classList.contains('active')) {
+            // Force chart refresh based on the captured active tab
+            if (activeTabId === 'biometrics') {
                 ui.renderBiometricChart();
             }
 
             // Force PUM table refresh
             ui.renderTeamSummary();
+
+            if (activeTabId === 'squad-data') {
+                ui.renderSquadChart(handleUnitClick);
+            }
+            
+            ui.logAction('Regeneration complete. Charts updated.', 'success');
         });
 
         // NEW: Handle Unit Clicks from Radar Chart (Macro -> Micro interaction)

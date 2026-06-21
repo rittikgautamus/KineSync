@@ -24,8 +24,10 @@ body {
 
 .container {
     max-width: 1600px;
-    width: 95%;
+    width: 100%;
     margin: 0 auto;
+    padding: 0 1rem;
+    box-sizing: border-box;
 }
 
 header {
@@ -74,14 +76,32 @@ main {
     flex-wrap: wrap;
 }
 
+/* Fix 1: Horizontal Swipeable Tabs for Mobile */
+.tabs {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto; /* Allow horizontal scrolling */
+    -webkit-overflow-scrolling: touch; /* Smooth iOS scrolling */
+    padding-bottom: 5px; /* Prevent scrollbar clipping */
+    scrollbar-width: none; /* Hide scrollbar Firefox */
+}
+
+.tabs::-webkit-scrollbar { 
+    display: none; /* Hide scrollbar Chrome/Safari */
+}
+
 .tab {
-    padding: 0.8rem 1rem;
+    padding: 0.7rem 1.2rem;
     border: 1px solid var(--border);
     border-radius: 999px;
     background: white;
     color: var(--text-main);
     cursor: pointer;
     transition: background 0.2s ease, border-color 0.2s ease;
+    white-space: nowrap; /* Prevent text from wrapping */
+    flex-shrink: 0; /* Keep pills from shrinking */
+    font-size: 0.9rem;
+    font-weight: 600;
 }
 
 .tab.active {
@@ -222,9 +242,34 @@ main {
     background: rgba(37, 99, 235, 0.08);
 }
 
+/* Fix 2: iOS Zoom Prevention on Dropdowns */
+select {
+    font-size: 16px !important; /* Forces iOS Safari NOT to zoom in when tapped */
+}
+
+/* Fix 3: Proper Mobile Stacking & Spacing */
 @media (max-width: 960px) {
-    main {
-        grid-template-columns: 1fr;
+    .container {
+        padding: 0;
+    }
+
+    .layout-grid {
+        grid-template-columns: 1fr; /* Stacks panels vertically */
+        gap: 1rem;
+    }
+
+    /* Ensure panels take full width on mobile */
+    .left-panel,
+    .right-panel {
+        width: 100%;
+    }
+    
+    .viz-container {
+        height: 350px; /* Slightly shorter on mobile to fit the screen */
+    }
+    
+    header h1 {
+        font-size: 2rem;
     }
 }
 
@@ -284,7 +329,7 @@ select {
     padding: 0.75rem;
     border-radius: 0.5rem;
     border: 1px solid var(--border);
-    font-size: 1rem;
+    font-size: 16px !important; /* Forces iOS Safari NOT to zoom in when tapped */
     background-color: white;
     cursor: pointer;
     width: 100%;
