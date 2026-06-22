@@ -44,4 +44,4 @@ KineSync moves beyond simple error analysis by mapping technical outcomes agains
 - **Research-Only Software:** KineSync is a personal, independent research project developed on my own time, using my own personal equipment, and is not affiliated with, endorsed by, or representative of the views of any past or present employer. 
 - **Ownership:** All intellectual property, code, and methodology contained herein are my own.
 - **Non-Commercial:** This project is provided for research, validation, and educational purposes only. It is not a commercial product.
-- **Copyright:** Copyright © 2026 Rittik Gautam. All Rights Reserved.
+- **Copyright:** Copyright (c) 2026 rittikgautamus. All Rights Reserved.
